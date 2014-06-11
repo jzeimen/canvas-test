@@ -1,4 +1,7 @@
-var THREE = require('THREE');
+var THREE = require('THREE'),
+    _ = require('underscore');
+
+var PI2 = Math.PI * 2;
 
 var camera,
     scene,
@@ -51,25 +54,34 @@ function createBox() {
   return new THREE.Mesh(geometry, material);
 }
 
+function randomPosition() {
+  var radius = 700,
+      theta = Math.random() * PI2,
+      phi = Math.random() * PI2;
+
+  return {
+    x: radius * Math.cos(theta) * Math.sin(phi),
+    y: radius * Math.sin(theta) * Math.sin(phi),
+    z: radius * Math.cos(phi)
+  };
+}
+
 function createParticleGroup() {
   var group = new THREE.Object3D();
 
-  var PI2 = Math.PI * 2,
-      material = new THREE.SpriteCanvasMaterial( {
-        color: 0xffffff,
-        program: function ( context ) {
-          context.beginPath();
-          context.arc(0, 0, 0.5, 0, PI2, true);
-          context.fill();
-        }
-      });
+  var material = new THREE.SpriteCanvasMaterial({
+    color: 0xffffff,
+    program: function ( context ) {
+      context.beginPath();
+      context.arc(0, 0, 1.5, 0, PI2, true);
+      context.fill();
+    }
+  });
 
-  for (var i = 0; i < 2000; i++) {
+  for (var i = 0; i < 1000; i++) {
     var particle = new THREE.Sprite(material);
 
-    particle.position.x = Math.random() * 2000 - 1000;
-    particle.position.y = Math.random() * 2000 - 1000;
-    particle.position.z = Math.random() * 2000 - 1000;
+    _.extend(particle.position, randomPosition());
 
     group.add(particle);
   }
