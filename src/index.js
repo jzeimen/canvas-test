@@ -1,54 +1,78 @@
 var THREE = require('THREE');
 
-var scene = new THREE.Scene(),
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 ),
-    renderer = new THREE.WebGLRenderer();
+var camera,
+    scene,
+    renderer,
+    particleGroup,
+    box;
 
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
+init();
+animate();
 
-var geometry = new THREE.CubeGeometry(1,1,1),
-    material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } ),
-    cube = new THREE.Mesh( geometry, material );
+function animate() {
+  requestAnimationFrame(animate);
 
-scene.add( cube );
+  if (particleGroup) {
+    particleGroup.rotation.x += 0.01;
+    particleGroup.rotation.y += 0.02;
+  }
 
-camera.position.z = 5;
+  if (box) {
+    box.rotation.x += 0.01;
+    box.rotation.y += 0.02;
+  }
 
-function render() {
-  requestAnimationFrame(render);
+  camera.position.z = 1000;
+  camera.lookAt( scene.position );
+
   renderer.render(scene, camera);
 }
-render();
 
-// create the particle variables
-var particleCount = 1800,
-    particles = new THREE.Geometry(),
-    pMaterial = new THREE.ParticleBasicMaterial({
-      color: 0xFFFFFF,
-      size: 20
-    });
+function init() {
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+  scene = new THREE.Scene();
 
-// now create the individual particles
-for (var p = 0; p < particleCount; p++) {
+  particleGroup = createParticleGroup();
+  scene.add(particleGroup);
 
-  // create a particle with random
-  // position values, -250 -> 250
-  var pX = Math.random() * 500 - 250,
-      pY = Math.random() * 500 - 250,
-      pZ = Math.random() * 500 - 250,
-      particle = new THREE.Vertex(
-        new THREE.Vector3(pX, pY, pZ)
-      );
+  box = createBox();
+  scene.add(box);
 
-  // add it to the geometry
-  particles.vertices.push(particle);
+  renderer = new THREE.CanvasRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  document.body.appendChild(renderer.domElement);
 }
 
-// create the particle system
-var particleSystem = new THREE.ParticleSystem(
-    particles,
-    pMaterial);
+function createBox() {
+  var material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}),
+      geometry = new THREE.BoxGeometry(200, 200, 200);
 
-// add it to the scene
-scene.addChild(particleSystem);
+  return new THREE.Mesh(geometry, material);
+}
+
+function createParticleGroup() {
+  var group = new THREE.Object3D();
+
+  var PI2 = Math.PI * 2,
+      material = new THREE.SpriteCanvasMaterial( {
+        color: 0xffffff,
+        program: function ( context ) {
+          context.beginPath();
+          context.arc(0, 0, 0.5, 0, PI2, true);
+          context.fill();
+        }
+      });
+
+  for (var i = 0; i < 2000; i++) {
+    var particle = new THREE.Sprite(material);
+
+    particle.position.x = Math.random() * 2000 - 1000;
+    particle.position.y = Math.random() * 2000 - 1000;
+    particle.position.z = Math.random() * 2000 - 1000;
+
+    group.add(particle);
+  }
+
+  return group;
+}
