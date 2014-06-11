@@ -38990,24 +38990,16 @@ animate();
 function animate() {
   requestAnimationFrame(animate);
 
-  if (particleGroup) {
-    particleGroup.rotation.x += 0.01;
-    particleGroup.rotation.y += 0.02;
-  }
+  particleGroup.rotation.x += 0.01;
+  particleGroup.rotation.y += 0.02;
 
-  if (box) {
-    box.rotation.x += 0.01;
-    box.rotation.y += 0.02;
-  }
-
-  camera.position.z = 1000;
-  camera.lookAt( scene.position );
+  box.rotation.x += 0.01;
+  box.rotation.y += 0.02;
 
   renderer.render(scene, camera);
 }
 
 function init() {
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
   scene = new THREE.Scene();
 
   particleGroup = createParticleGroup();
@@ -39015,6 +39007,10 @@ function init() {
 
   box = createBox();
   scene.add(box);
+
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+  camera.position.z = 1000;
+  camera.lookAt(scene.position);
 
   renderer = new THREE.CanvasRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
