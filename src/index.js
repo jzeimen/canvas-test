@@ -33,9 +33,8 @@ function init() {
   box = createBox();
   scene.add(box);
 
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-  camera.position.z = 1000;
-  camera.lookAt(scene.position);
+  camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 1, 10000);
+  // camera.position.z = 1000;
 
   renderer = new THREE.CanvasRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -76,9 +75,7 @@ function createParticleGroup() {
 
   for (var i = 0; i < 1000; i++) {
     var particle = new THREE.Sprite(material);
-
     _.extend(particle.position, randomPosition());
-
     group.add(particle);
   }
 
