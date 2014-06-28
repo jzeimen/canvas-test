@@ -17,18 +17,10 @@ animate();
 function animate() {
  // requestAnimationFrame(animate);
 
-<<<<<<< HEAD
+
  //  particleGroup.rotation.x += 0.01;
  //  particleGroup.rotation.y += 0.02;
-=======
-  particleGroup.rotation.x += 0.01;
-  particleGroup.rotation.y += 0.02;
 
-  if (box) {
-    box.rotation.x += 0.01;
-    box.rotation.y += 0.02;
-  }
->>>>>>> 3e1608496f56796973418c3ffe31a4a881673407
 
  //  box.rotation.x += 0.01;
  //  box.rotation.y += 0.02;
