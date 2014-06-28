@@ -17,8 +17,18 @@ animate();
 function animate() {
  // requestAnimationFrame(animate);
 
+<<<<<<< HEAD
  //  particleGroup.rotation.x += 0.01;
  //  particleGroup.rotation.y += 0.02;
+=======
+  particleGroup.rotation.x += 0.01;
+  particleGroup.rotation.y += 0.02;
+
+  if (box) {
+    box.rotation.x += 0.01;
+    box.rotation.y += 0.02;
+  }
+>>>>>>> 3e1608496f56796973418c3ffe31a4a881673407
 
  //  box.rotation.x += 0.01;
  //  box.rotation.y += 0.02;
@@ -31,8 +41,8 @@ function init() {
   particleGroup = createParticleGroup();
   scene.add(particleGroup);
 
-  box = createBox();
-  scene.add(box);
+  // box = createBox();
+  // scene.add(box);
 
   camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 10000);
   //camera.position.z = 1000;
@@ -41,7 +51,7 @@ function init() {
   camera.up = new THREE.Vector3(0,0,1);
   camera.lookAt(new THREE.Vector3(0,0,88));
 
-  renderer = new THREE.CanvasRenderer();
+  renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   document.body.appendChild(renderer.domElement);
@@ -86,7 +96,7 @@ function createParticleGroup() {
   var MAX_MAG = 8;
   _.each(STARS, function(star){
     if(star.mag > MAX_MAG) return;
-      var material = new THREE.SpriteCanvasMaterial({
+      var material = new THREE.SpriteMaterial({
       color: 0xffffff,
       program: function ( context ) {
         context.beginPath();
@@ -99,12 +109,13 @@ function createParticleGroup() {
     group.add(particle);
   });
 
-  var material = new THREE.SpriteCanvasMaterial({
+  var material = new THREE.SpriteMaterial({
   color: 0x0000FF,
   program: function ( context ) {
     context.beginPath();
     context.arc(0, 0, 10, 0, PI2, true);
     context.fill();
+
     }
   });
   var particle = new THREE.Sprite(material);

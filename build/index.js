@@ -38993,8 +38993,10 @@ function animate() {
   particleGroup.rotation.x += 0.01;
   particleGroup.rotation.y += 0.02;
 
-  box.rotation.x += 0.01;
-  box.rotation.y += 0.02;
+  if (box) {
+    box.rotation.x += 0.01;
+    box.rotation.y += 0.02;
+  }
 
   renderer.render(scene, camera);
 }
@@ -39005,13 +39007,13 @@ function init() {
   particleGroup = createParticleGroup();
   scene.add(particleGroup);
 
-  box = createBox();
-  scene.add(box);
+  // box = createBox();
+  // scene.add(box);
 
   camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 1, 10000);
   // camera.position.z = 1000;
 
-  renderer = new THREE.CanvasRenderer();
+  renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   document.body.appendChild(renderer.domElement);
@@ -39039,9 +39041,9 @@ function randomPosition() {
 function createParticleGroup() {
   var group = new THREE.Object3D();
 
-  var material = new THREE.SpriteCanvasMaterial({
+  var material = new THREE.SpriteMaterial({
     color: 0xffffff,
-    program: function ( context ) {
+    program: function (context) {
       context.beginPath();
       context.arc(0, 0, 1.5, 0, PI2, true);
       context.fill();
